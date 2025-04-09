@@ -1,30 +1,48 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, watch } from 'vue';
 
-const items = ref([
-  { "id": 1, "title": "Задача 1", "done": false },
-  { "id": 2, "title": "Задача 2", "done": false },
-  { "id": 3, "title": "Задача 3", "done": false },
-  { "id": 4, "title": "Задача 4", "done": false },
-  { "id": 5, "title": "Задача 5", "done": false }
-])
+const items = ref();
+
+onMounted(() => {
+  const storeData = localStorage.getItem('items');
+
+  if (storeData) {
+    items.value = JSON.parse(storeData)
+  } else {
+    const url = '/tasks.json';
+
+    fetch(url).then(response => {
+      response.json().then(itemsJson => {
+        items.value = itemsJson
+      })
+    });
+  }
+})
+
+watch(items, (newValue) => {
+  localStorage.setItem("items", JSON.stringify(newValue));
+},
+  { deep: true }
+)
+
 </script>
 
 <template>
- <div>
-  <ul>
-    <li v-for="item in items" class="item" :key="item.id">
-      <input class="checkbox-input" type="checkbox" v-model="item.done">
-      <label class="checkbox-label" :class="{'completed': item.done}">{{ item.title }}</label>
-    </li>
-  </ul>
- </div>
+  <div>
+    <ul>
+      <li v-for="item in items" class="item" :key="item.id">
+        <input class="checkbox-input" type="checkbox" v-model="item.done" :id="`box-${item.id}`">
+        <label class="checkbox-label" :class="{ 'completed': item.done }" :for="`box-${item.id}`">{{ item.title }}</label>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <style scoped>
 .completed {
   text-decoration: line-through;
 }
+
 .item {
   margin-top: 5px;
   width: fit-content;
