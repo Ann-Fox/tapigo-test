@@ -7,23 +7,23 @@ onMounted(() => {
   const storeData = localStorage.getItem('items');
 
   if (storeData) {
-    items.value = JSON.parse(storeData)
+    items.value = JSON.parse(storeData);
   } else {
     const url = '/tapigo-test/tasks.json';
 
     fetch(url).then(response => {
       response.json().then(itemsJson => {
-        items.value = itemsJson
+        items.value = itemsJson;
       })
     });
   }
-})
+});
 
 watch(items, (newValue) => {
   localStorage.setItem("items", JSON.stringify(newValue));
 },
   { deep: true }
-)
+);
 
 </script>
 
