@@ -1,29 +1,27 @@
-# tapigo-test
+# Тестовое задание Tapigo
 
-This template should help get you started developing with Vue 3 in Vite.
+### SPA-приложение на Vue, которое:
 
-## Recommended IDE Setup
+* Загружает список задач из JSON-файла
+* Позволяет отмечать задачи как выполненные (чекбоксы)
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+### Функционал приложения:
+* При первом запуске данные подгружаются асинхронно из файла tasks.json
+* При перезагрузке страницы, состояние списка задач сохраняется
 
-## Customize configuration
+### Запуск приложения
 
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
+#### Компиляция и перезагрузка для разработки
 
 ```sh
 npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
 npm run dev
 ```
 
-### Compile and Minify for Production
+#### Компиляция и запуск для производства
 
 ```sh
+npm install
 npm run build
+npx serve@latest ./dist
 ```
