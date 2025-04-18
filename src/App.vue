@@ -5,9 +5,9 @@ let id = 0
 
 const newTodo = ref('')
 const todos = ref([
-  { id: id++, text: 'Learning JavaScript' },
-  { id: id++, text: 'Learning Vue.js 3' },
-  { id: id++, text: 'To be happy' },
+  { id: id++, text: 'Learning JavaScript', done: true },
+  { id: id++, text: 'Learning Vue.js 3', done: true },
+  { id: id++, text: 'To be happy', done: false },
 ])
 
 function addTask() {
@@ -27,12 +27,12 @@ function removeTask(todo) {
 
   <main>
     <div>
-      <input type="text" v-model="newTodo" placeholder="write a task" required>
+      <input type="text" required v-model="newTodo" placeholder="write a task">
       <button @click="addTask">Add task</button>
     </div>
     <ul>
-      <li v-for="todo in todos" :key="todo.id">
-        <input type="checkbox" name="" id="">
+      <li v-for="todo in todos" :key="todo.id" :class="{ 'done': todo.done }">
+        <input type="checkbox" name="" v-model="todo.done">
         {{ todo.text }}
         <button @click="removeTask(todo)">del</button>
       </li>
@@ -41,4 +41,8 @@ function removeTask(todo) {
   </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+.done {
+  text-decoration: line-through;
+}
+</style>
