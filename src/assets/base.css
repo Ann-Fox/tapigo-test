@@ -7,8 +7,6 @@
 }
 
 body {
-  display: flex;
-  padding-top: 40px;
   font-family:
   Inter,
   -apple-system,
@@ -22,20 +20,4 @@ body {
   'Droid Sans',
   'Helvetica Neue',
   sans-serif;
-}
-
-#app {
-  background-color: rgb(155, 240, 240);
-  margin: 0 auto;
-  width: 100%;
-  min-width: 300px;
-  max-width: 520px;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2),
-    0 25px 50px 0 rgba(0, 0, 0, 0.1);
-    padding: 20px;
-}
-
-ul, ul li {
-	list-style: none;
-  padding: 0;
 }
