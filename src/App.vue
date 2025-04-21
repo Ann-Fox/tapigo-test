@@ -31,14 +31,14 @@ function removeTask(todo) {
   </header>
 
   <main>
-    <div>
+    <form @submit.prevent="addTask">
       <input type="text" required v-model="newTodo" placeholder="write a task">
-      <button @click="addTask">Add task</button>
-    </div>
+      <button>Add task</button>
+    </form>
     <ul>
       <li v-for="todo in dotosFilter" :key="todo.id" :class="{ 'done': todo.done }">
-        <input type="checkbox" name="" v-model="todo.done">
-        {{ todo.text }}
+        <input type="checkbox" name="" v-model="todo.done" :id="`box-${todo.id}`">
+        <label :for="`box-${todo.id}`"> {{ todo.text }}</label>
         <button @click="removeTask(todo)">del</button>
       </li>
     </ul>
