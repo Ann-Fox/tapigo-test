@@ -26,27 +26,110 @@ function removeTask(todo) {
 </script>
 
 <template>
-  <header>
-    <h1>TODO LIST</h1>
-  </header>
-
   <main>
-    <form @submit.prevent="addTask">
-      <input type="text" required v-model="newTodo" placeholder="write a task">
-      <button>Add task</button>
+    <div class="header">
+      <h1>TODO list</h1>
+    </div>
+
+    <form class="form" @submit.prevent="addTask">
+      <input class="form__input" type="text" required v-model="newTodo" placeholder="What would you like to do?">
+      <button class="form__button">Add task</button>
     </form>
     <ul>
       <li v-for="todo in dotosFilter" :key="todo.id" :class="{ 'done': todo.done }">
         <input type="checkbox" name="" v-model="todo.done" :id="`box-${todo.id}`">
         <label :for="`box-${todo.id}`"> {{ todo.text }}</label>
-        <button @click="removeTask(todo)">del</button>
+        <button class="button__remove" @click="removeTask(todo)"><img src="./components/icons/delete_24.svg"></button>
       </li>
     </ul>
-    <button @click="completed = !completed">{{ completed ? 'show all tasks' : 'hide done tasks' }}</button>
+    <button @click="completed = !completed" class="button__toggle" :class="{ 'hide': !completed }">{{ completed ? 'show all tasks' : 'hide done tasks' }}</button>
   </main>
 </template>
 
 <style scoped>
+main {
+  background-color:
+    #f7f7ff;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  font-size: 36px;
+  color: #fff;
+  font-weight: 300;
+
+  height: 200px;
+  border-radius: 20px 20px 0 0;
+  background: -webkit-linear-gradient(90deg, #604486, #59538d, #516395);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(90deg, #604486, #59538d, #516395);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.form {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 0;
+  border-radius: 20px;
+  gap: 20px;
+
+  width: 90%;
+  margin-inline: auto;
+  /* inset-inline: 0; */
+  inset-block-start: 40%;
+  transform: translateY(-50%);
+}
+
+.form__input {
+  width: 100%;
+  max-width: 400px;
+  border: 0;
+  border-bottom: 2px solid #000;
+  outline: 0;
+}
+
+.form__input:focus {
+  border-image: linear-gradient(to right, #11998e, #38ef7d);
+  border-image-slice: 1;
+}
+
+.form__button {
+  background-color: #ed6a5a;
+  max-width: 150px;
+  text-transform: uppercase;
+}
+
+.button__remove {
+  display: flex;
+  justify-content: center;
+  max-width: 30px;
+  height: 100%;
+  border-radius: 50%;
+  background: -webkit-linear-gradient(159deg, #ffffff, #fa0b23);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(159deg, #ffffff, #fa0b23);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.button__remove_img svg {
+  color: #000;
+}
+
+.button__toggle {
+  background-color: #ff3d51;
+  max-width: 200px;
+  font-size: 16px;
+}
+
+.hide {
+  background-color: #aec7bc;
+}
+
 .done {
   text-decoration: line-through;
 }
