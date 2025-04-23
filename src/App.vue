@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
+import ButtonToggle from './components/ButtonToggle.vue'
 
 let id = 0
 
@@ -36,13 +37,13 @@ function removeTask(todo) {
       <button class="form__button">Add task</button>
     </form>
     <ul>
-      <li v-for="todo in dotosFilter" :key="todo.id" :class="{ 'done': todo.done }">
-        <input type="checkbox" name="" v-model="todo.done" :id="`box-${todo.id}`">
-        <label :for="`box-${todo.id}`"> {{ todo.text }}</label>
-        <button class="button__remove" @click="removeTask(todo)"><img src="./components/icons/delete_24.svg"></button>
+      <li v-for="todo in dotosFilter" :key="todo.id" :class="{ 'done': todo.done }" class="task-li">
+        <input type="checkbox" name="" v-model="todo.done" :id="`box-${todo.id}`" class="task-li__input">
+        <label :for="`box-${todo.id}`" lass="task-li__label"> {{ todo.text }}</label>
+        <button class="task-li__button" @click="removeTask(todo)"><img src="./components/icons/delete_24.svg"></button>
       </li>
     </ul>
-    <button @click="completed = !completed" class="button__toggle" :class="{ 'hide': !completed }">{{ completed ? 'show all tasks' : 'hide done tasks' }}</button>
+       <ButtonToggle @click="completed = !completed" :completed="completed"></ButtonToggle>
   </main>
 </template>
 
@@ -82,7 +83,11 @@ main {
   margin-inline: auto;
   /* inset-inline: 0; */
   inset-block-start: 40%;
-  transform: translateY(-50%);
+  transform: translateY(-70%);
+
+  -webkit-box-shadow: 0px 1px 42px -11px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 1px 42px -11px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 1px 42px -11px rgba(0, 0, 0, 0.2);
 }
 
 .form__input {
@@ -104,12 +109,68 @@ main {
   text-transform: uppercase;
 }
 
-.button__remove {
+ul {
+  margin-inline: auto;
+  inset-inline: 0;
+  inset-block-start: 50%;
+  transform: translateY(-10%);
+
+  width: 90%;
+  margin: 0 auto;
+
+  max-height: 500px;
+  overflow-y: scroll;
+  /** Выравнивание блока */
+  /* margin-inline: auto;
+  inset-inline: 0;
+  inset-block-start: 50%;
+  transform: translateY(-50%); */
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 30px 0;
+  background-color: #fff;
+  border-radius: 20px;
+
+  -webkit-box-shadow: 0px 1px 42px -11px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 1px 42px -11px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 1px 42px -11px rgba(0, 0, 0, 0.2);
+}
+
+.task-li {
+  position: relative;
+  padding: 10px 0;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-areas:
+    "label input btn";
+}
+
+.task-li::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  border-bottom: #ddd5d5 solid 1px;
+}
+
+.task-li__input {
+  grid-area: input;
+}
+
+.task-li__label {
+  grid-area: label;
+}
+
+.task-li__button {
+  grid-area: btn;
   display: flex;
   justify-content: center;
   max-width: 30px;
   height: 100%;
   border-radius: 50%;
+
   background: -webkit-linear-gradient(159deg, #ffffff, #fa0b23);
   /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(159deg, #ffffff, #fa0b23);
@@ -120,15 +181,6 @@ main {
   color: #000;
 }
 
-.button__toggle {
-  background-color: #ff3d51;
-  max-width: 200px;
-  font-size: 16px;
-}
-
-.hide {
-  background-color: #aec7bc;
-}
 
 .done {
   text-decoration: line-through;
