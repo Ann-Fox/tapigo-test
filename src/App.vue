@@ -36,24 +36,40 @@ function removeTask(todo) {
       <input class="form__input" type="text" required v-model="newTodo" placeholder="What would you like to do?">
       <button class="form__button">Add task</button>
     </form>
-    <ul>
-      <li v-for="todo in dotosFilter" :key="todo.id" :class="{ 'done': todo.done }" class="task-li">
-        <input type="checkbox" name="" v-model="todo.done" :id="`box-${todo.id}`" class="task-li__input">
-        <label :for="`box-${todo.id}`" lass="task-li__label"> {{ todo.text }}</label>
-        <button class="task-li__button" @click="removeTask(todo)"><img src="./components/icons/delete_24.svg"></button>
-      </li>
-    </ul>
-       <ButtonToggle @click="completed = !completed" :completed="completed"></ButtonToggle>
+
+    <div class="list">
+      <div class="list__header">
+        <h3>TODO List</h3>
+        <ButtonToggle @click="completed = !completed" :completed="completed"></ButtonToggle>
+      </div>
+
+      <div class="list__block">
+        <div class="list__title">
+          <p>List</p>
+          <p>Status</p>
+          <p>Close</p>
+        </div>
+        <ul>
+          <li v-for="todo in dotosFilter" :key="todo.id" :class="{ 'done': todo.done }" class="task-li">
+            <input type="checkbox" name="" v-model="todo.done" :id="`box-${todo.id}`" class="task-li__input">
+            <label :for="`box-${todo.id}`" lass="task-li__label"> {{ todo.text }}</label>
+            <button class="task-li__button" @click="removeTask(todo)"><img
+                src="./components/icons/delete_24.svg"></button>
+          </li>
+        </ul>
+      </div>
+    </div>
   </main>
 </template>
 
 <style scoped>
 main {
-  background-color:
-    #f7f7ff;
+  background-color: #f7f7ff;
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
+  padding-bottom: 50px;
+  border-radius: 20px;
 }
 
 .header {
@@ -109,33 +125,52 @@ main {
   text-transform: uppercase;
 }
 
-ul {
-  margin-inline: auto;
-  inset-inline: 0;
-  inset-block-start: 50%;
-  transform: translateY(-10%);
-
-  width: 90%;
-  margin: 0 auto;
-
-  max-height: 500px;
-  overflow-y: scroll;
-  /** Выравнивание блока */
-  /* margin-inline: auto;
-  inset-inline: 0;
-  inset-block-start: 50%;
-  transform: translateY(-50%); */
-
+.list {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 30px;
+
+  width: 90%;
+  margin: -60px auto 0 auto;
+
   padding: 30px 0;
-  background-color: #fff;
+  background-color: #ffffff;
   border-radius: 20px;
 
   -webkit-box-shadow: 0px 1px 42px -11px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0px 1px 42px -11px rgba(0, 0, 0, 0.2);
   box-shadow: 0px 1px 42px -11px rgba(0, 0, 0, 0.2);
+}
+
+.list__header {
+  display: grid;
+  grid-template-columns: 55% 45%;
+  align-items: end;
+  padding: 0 30px;
+}
+
+h3 {
+  font-weight: 600;
+}
+
+.list__title {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+  color: #d7d1cb;
+  padding: 0 30px;
+  font-weight: 300;
+}
+
+ul {
+  padding: 0 30px;
+  max-height: 500px;
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .task-li {
@@ -161,6 +196,7 @@ ul {
 
 .task-li__label {
   grid-area: label;
+  font-weight: 300;
 }
 
 .task-li__button {
@@ -184,5 +220,6 @@ ul {
 
 .done {
   text-decoration: line-through;
+
 }
 </style>
