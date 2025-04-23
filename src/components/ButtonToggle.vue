@@ -1,6 +1,6 @@
 <template>
     <button class="button__toggle" :class="{ 'hide': props.completed }">
-        {{ props.completed ? 'show all tasks' : 'hide done tasks' }}</button>
+        {{ props.completed ? 'show tasks' : 'hide tasks' }}</button>
 </template>
 
 <script setup>
@@ -18,5 +18,19 @@ const props = defineProps({
 
 .hide {
     background-color: #aec7bc;
+}
+
+@media (max-width: 567px) {
+
+    .button__toggle {
+        padding: 5px;
+    }
+}
+
+@media (max-width: 425px) {
+    .button__toggle {
+        font-size: 14px;
+
+    }
 }
 </style>

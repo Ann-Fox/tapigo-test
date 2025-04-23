@@ -51,8 +51,8 @@ function removeTask(todo) {
         </div>
         <ul>
           <li v-for="todo in dotosFilter" :key="todo.id" :class="{ 'done': todo.done }" class="task-li">
-            <input type="checkbox" name="" v-model="todo.done" :id="`box-${todo.id}`" class="task-li__input">
-            <label :for="`box-${todo.id}`" lass="task-li__label"> {{ todo.text }}</label>
+            <input type="checkbox" name="" v-model="todo.done" :id="`box-${todo.id}`" class="task-li__checkbox">
+            <label :for="`box-${todo.id}`" сlass="task-li__label"> {{ todo.text }}</label>
             <button class="task-li__button" @click="removeTask(todo)"><img
                 src="./components/icons/delete_24.svg"></button>
           </li>
@@ -180,6 +180,7 @@ ul {
   grid-template-columns: 2fr 1fr 1fr;
   grid-template-areas:
     "label input btn";
+  align-items: end;
 }
 
 .task-li::after {
@@ -190,13 +191,47 @@ ul {
   border-bottom: #ddd5d5 solid 1px;
 }
 
-.task-li__input {
+.task-li__checkbox {
   grid-area: input;
+
+  appearance: none;
+  position: relative;
+  margin: 0 auto;
+  width: 30px;
+  height: 30px;
+  background: #aec7bc;
+  box-shadow: inset 0 0 5px rgb(0 0 0 / 0.2);
+  border-radius: 10px;
+  border: 1px solid #ffffff;
+  transition: 500ms;
 }
 
-.task-li__label {
+.task-li__checkbox::after {
+  content: "\2714";
+  position: absolute;
+  color: #fff;
+  top: -5px;
+  left: 2px;
+  width: 0px;
+  height: 0px;
+  font-size: 26px;
+  transition: 500ms;
+  overflow: hidden;
+}
+
+.task-li__checkbox:checked::after {
+  width: 30px;
+  height: 30px;
+  transition: 500ms;
+}
+
+li>label {
   grid-area: label;
   font-weight: 300;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .task-li__button {
@@ -205,6 +240,7 @@ ul {
   justify-content: center;
   max-width: 30px;
   height: 100%;
+  margin: 0 auto;
   border-radius: 50%;
 
   background: -webkit-linear-gradient(159deg, #ffffff, #fa0b23);
@@ -220,6 +256,58 @@ ul {
 
 .done {
   text-decoration: line-through;
+}
 
+@media (max-width: 567px) {
+
+  .header {
+    font-size: 32px;
+    height: 150px;
+  }
+
+  .form {
+    padding: 20px 0;
+  }
+
+  .form__input {
+    max-width: 300px;
+  }
+
+  .list__title {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+
+  .list__title>p:not(:first-child) {
+    text-align: center;
+  }
+}
+
+@media (max-width: 425px) {
+  .header {
+    font-size: 28px;
+    height: 130px;
+  }
+
+  .form__input {
+    max-width: 200px;
+  }
+
+  .list {
+    padding: 20px 0;
+    gap: 20px;
+  }
+
+  .list__header {
+    padding: 0 20px;
+  }
+
+  .list__title {
+    padding: 0 20px;
+  }
+
+  ul {
+    gap: 10px;
+    padding: 0 20px;
+  }
 }
 </style>
