@@ -4,12 +4,19 @@ import ButtonToggle from './components/ButtonToggle.vue'
 
 let id = 0
 
-const completed = ref(false)
+const completed = ref()
 const newTodo = ref('')
 const todos = ref()
 
 onMounted(() => {
   const storeData = localStorage.getItem('todos')
+  const completedData = localStorage.getItem('completed')
+
+  if (completedData) {
+    completed.value = JSON.parse(completedData)
+  } else {
+    completed.value = false
+  }
 
   if (storeData) {
     todos.value = JSON.parse(storeData)
@@ -22,6 +29,10 @@ onMounted(() => {
       })
     })
   }
+})
+
+watch(completed, (newValue) => {
+  localStorage.setItem('completed', JSON.stringify(newValue))
 })
 
 watch(todos, (newValue) => {

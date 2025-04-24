@@ -1,6 +1,6 @@
 <template>
     <button class="button__toggle" :class="{ 'hide': props.completed }">
-        {{ props.completed ? 'show tasks' : 'hide tasks' }}</button>
+        {{ props.completed ? 'show completed' : 'hide completed' }}</button>
 </template>
 
 <script setup>
