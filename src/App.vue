@@ -14,7 +14,7 @@ onMounted(() => {
   if (storeData) {
     todos.value = JSON.parse(storeData)
   } else {
-    const url = './public/tasks.json'
+    const url = 'tapigo-test/tasks.json'
 
     fetch(url).then(response => {
       response.json().then(todosJson => {
