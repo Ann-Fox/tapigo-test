@@ -1,18 +1,40 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import ButtonToggle from './components/ButtonToggle.vue'
 
 let id = 0
 
 const completed = ref(false)
 const newTodo = ref('')
-const todos = ref([
-  { id: id++, text: 'Learning JavaScript', done: true },
-  { id: id++, text: 'Learning Vue.js 3', done: true },
-  { id: id++, text: 'To be happy', done: false },
-])
+const todos = ref()
 
-const dotosFilter = computed(() => {
+onMounted(() => {
+  const storeData = localStorage.getItem('todos')
+
+  if (storeData) {
+    todos.value = JSON.parse(storeData)
+  } else {
+    const url = './public/tasks.json'
+
+    fetch(url).then(response => {
+      response.json().then(todosJson => {
+        todos.value = todosJson
+      })
+    })
+  }
+})
+
+watch(todos, (newValue) => {
+  localStorage.setItem('todos', JSON.stringify(newValue))
+
+  const todosFilter = computed(() => {
+    return completed.value ? todos.value.filter((t) => !t.done) : todos.value
+  })
+},
+  { deep: true })
+
+
+const todosFilter = computed(() => {
   return completed.value ? todos.value.filter((t) => !t.done) : todos.value
 })
 
@@ -50,7 +72,7 @@ function removeTask(todo) {
           <p>Close</p>
         </div>
         <ul>
-          <li v-for="todo in dotosFilter" :key="todo.id" :class="{ 'done': todo.done }" class="task-li">
+          <li v-for="todo in todosFilter" :key="todo.id" :class="{ 'done': todo.done }" class="task-li">
             <input type="checkbox" name="" v-model="todo.done" :id="`box-${todo.id}`" class="task-li__checkbox">
             <label :for="`box-${todo.id}`" сlass="task-li__label"> {{ todo.text }}</label>
             <button class="task-li__button" @click="removeTask(todo)"><img
