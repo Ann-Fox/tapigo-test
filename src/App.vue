@@ -1,9 +1,11 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import ButtonToggle from './components/ButtonToggle.vue'
+import ModalView from './components/ModalView.vue'
 
 let id = 0
 
+const showModal = ref(false)
 const completed = ref()
 const newTodo = ref('')
 const todos = ref()
@@ -44,7 +46,6 @@ watch(todos, (newValue) => {
 },
   { deep: true })
 
-
 const todosFilter = computed(() => {
   return completed.value ? todos.value.filter((t) => !t.done) : todos.value
 })
@@ -60,6 +61,7 @@ function removeTask(todo) {
 </script>
 
 <template>
+
   <main>
     <div class="header">
       <h1>TODO list</h1>
@@ -73,6 +75,12 @@ function removeTask(todo) {
     <div class="list">
       <div class="list__header">
         <h3>TODO List</h3>
+
+        <button @click="showModal = true" class="btn-show-modal">open modal</button>
+        <Teleport to="body">
+          <ModalView :show="showModal" @close="showModal=false"></ModalView>
+        </Teleport>
+
         <ButtonToggle @click="completed = !completed" :completed="completed"></ButtonToggle>
       </div>
 
@@ -96,6 +104,10 @@ function removeTask(todo) {
 </template>
 
 <style scoped>
+.btn-show-modal {
+  background-color: #11998e;
+}
+
 main {
   background-color: #f7f7ff;
   width: 100%;
