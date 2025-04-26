@@ -1,21 +1,39 @@
 <script setup>
+import { ref } from 'vue';
+
 const props = defineProps({
     task: {
         type: Object,
         default: ()=>({})
     },
 })
+
+const showModal=ref(false)
 </script>
 
 <template>
     <li class="task">
         <input type="checkbox" name="" v-model="task.done" :id="`box-${task.id}`" class="task__checkbox">
         <label :for="`box-${task.id}`" сlass="task__label" :class="{'done':task.done }"> {{ task.text }}</label>
-        <button class="task__button" @click="$emit('remove-task')"><img src="./icons/delete_24.svg"></button>
+        <button class="task__button" @click="showModal = !showModal"><img src="./icons/delete_24.svg"></button>
     </li>
+
+    <Transition name="modal">
+        <div v-if="showModal" class="modal-mask">
+            <div class="modal-container">
+                <div class="modal-header">
+                    Do yoy realle want to delete the task? {{task.text }}
+                </div>
+                <div class="modal-body">
+                    <button class="btn btn-delete" @click="$emit('remove-task')">Yes</button>
+                    <button class="btn btn-close" @click="showModal=false">No</button>
+                </div>
+            </div>
+        </div>
+    </Transition>
 </template>
 
-<style scoped>
+<style>
 .done {
     text-decoration: line-through;
 }
@@ -94,5 +112,43 @@ li>label {
     /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(159deg, #ffffff, #fa0b23);
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.modal-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    transition: opasity 0.3s ease;
+    display: flex;
+    z-index: 10;
+}
+
+.modal-container {
+    width: 450px;
+    margin: auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    margin-bottom: 20px;
+}
+
+.modal-body {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-close {
+    background-color: #13d83e;
+}
+
+.btn-delete {
+    background-color: #ff3d51;
 }
 </style>
