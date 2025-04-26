@@ -1,11 +1,9 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import ButtonToggle from './components/ButtonToggle.vue'
-import ModalView from './components/ModalView.vue'
-
+import TaskComponent from './components/TaskComponent.vue'
 let id = 0
 
-const showModal = ref(false)
 const completed = ref()
 const newTodo = ref('')
 const todos = ref()
@@ -58,10 +56,10 @@ function addTask() {
 function removeTask(todo) {
   todos.value = todos.value.filter((t) => t !== todo)
 }
+
 </script>
 
 <template>
-
   <main>
     <div class="header">
       <h1>TODO list</h1>
@@ -75,12 +73,6 @@ function removeTask(todo) {
     <div class="list">
       <div class="list__header">
         <h3>TODO List</h3>
-
-        <button @click="showModal = true" class="btn-show-modal">open modal</button>
-        <Teleport to="body">
-          <ModalView :show="showModal" @close="showModal=false"></ModalView>
-        </Teleport>
-
         <ButtonToggle @click="completed = !completed" :completed="completed"></ButtonToggle>
       </div>
 
@@ -90,13 +82,9 @@ function removeTask(todo) {
           <p>Status</p>
           <p>Close</p>
         </div>
-        <ul>
-          <li v-for="todo in todosFilter" :key="todo.id" :class="{ 'done': todo.done }" class="task-li">
-            <input type="checkbox" name="" v-model="todo.done" :id="`box-${todo.id}`" class="task-li__checkbox">
-            <label :for="`box-${todo.id}`" сlass="task-li__label"> {{ todo.text }}</label>
-            <button class="task-li__button" @click="removeTask(todo)"><img
-                src="./components/icons/delete_24.svg"></button>
-          </li>
+        <ul >
+          <TaskComponent v-for="todo in todosFilter" :key="todo.id" :task="todo" @remove-task="removeTask(todo)">
+          </TaskComponent>
         </ul>
       </div>
     </div>
@@ -104,10 +92,6 @@ function removeTask(todo) {
 </template>
 
 <style scoped>
-.btn-show-modal {
-  background-color: #11998e;
-}
-
 main {
   background-color: #f7f7ff;
   width: 100%;
@@ -216,91 +200,6 @@ ul {
   display: flex;
   flex-direction: column;
   gap: 20px;
-}
-
-.task-li {
-  position: relative;
-  padding: 10px 0;
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  grid-template-areas:
-    "label input btn";
-  align-items: end;
-}
-
-.task-li::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-  border-bottom: #ddd5d5 solid 1px;
-}
-
-.task-li__checkbox {
-  grid-area: input;
-
-  appearance: none;
-  position: relative;
-  margin: 0 auto;
-  width: 30px;
-  height: 30px;
-  background: #aec7bc;
-  box-shadow: inset 0 0 5px rgb(0 0 0 / 0.2);
-  border-radius: 10px;
-  border: 1px solid #ffffff;
-  transition: 500ms;
-}
-
-.task-li__checkbox::after {
-  content: "\2714";
-  position: absolute;
-  color: #fff;
-  top: -5px;
-  left: 2px;
-  width: 0px;
-  height: 0px;
-  font-size: 26px;
-  transition: 500ms;
-  overflow: hidden;
-}
-
-.task-li__checkbox:checked::after {
-  width: 30px;
-  height: 30px;
-  transition: 500ms;
-}
-
-li>label {
-  grid-area: label;
-  font-weight: 300;
-
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.task-li__button {
-  grid-area: btn;
-  display: flex;
-  justify-content: center;
-  max-width: 30px;
-  height: 100%;
-  margin: 0 auto;
-  border-radius: 50%;
-
-  background: -webkit-linear-gradient(159deg, #ffffff, #fa0b23);
-  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(159deg, #ffffff, #fa0b23);
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-}
-
-.button__remove_img svg {
-  color: #000;
-}
-
-
-.done {
-  text-decoration: line-through;
 }
 
 @media (max-width: 567px) {
