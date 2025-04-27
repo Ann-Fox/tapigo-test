@@ -82,7 +82,7 @@ function removeTask(todo) {
           <p>Status</p>
           <p>Close</p>
         </div>
-        <ul >
+        <ul>
           <TaskComponent v-for="todo in todosFilter" :key="todo.id" :task="todo" @remove-task="removeTask(todo)">
           </TaskComponent>
         </ul>

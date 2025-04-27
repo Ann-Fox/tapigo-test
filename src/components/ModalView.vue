@@ -2,6 +2,10 @@
 const props = defineProps({
     show: {
         type: Boolean
+    },
+    task: {
+        type: Object,
+        default: () => ({})
     }
 })
 </script>
@@ -11,10 +15,10 @@ const props = defineProps({
         <div v-if="show" class="modal-mask">
             <div class="modal-container">
                 <div class="modal-header">
-                    Do yoy realle want to delete the task?
+                    Do you really want to delete the task? {{ task.id - task.text }}
                 </div>
                 <div class="modal-body">
-                    <button class="btn btn-delete">Yes</button>
+                    <button @click="$emit('delete')" class="btn btn-delete">Yes</button>
                     <button @click="$emit('close')" class="btn btn-close">No</button>
                 </div>
             </div>

@@ -4,17 +4,17 @@ import { ref } from 'vue';
 const props = defineProps({
     task: {
         type: Object,
-        default: ()=>({})
+        default: () => ({})
     },
 })
 
-const showModal=ref(false)
+const showModal = ref(false)
 </script>
 
 <template>
     <li class="task">
         <input type="checkbox" name="" v-model="task.done" :id="`box-${task.id}`" class="task__checkbox">
-        <label :for="`box-${task.id}`" сlass="task__label" :class="{'done':task.done }"> {{ task.text }}</label>
+        <label :for="`box-${task.id}`" сlass="task__label" :class="{ 'done': task.done }"> {{ task.text }}</label>
         <button class="task__button" @click="showModal = !showModal"><img src="./icons/delete_24.svg"></button>
     </li>
 
@@ -22,11 +22,11 @@ const showModal=ref(false)
         <div v-if="showModal" class="modal-mask">
             <div class="modal-container">
                 <div class="modal-header">
-                    Do yoy realle want to delete the task? {{task.text }}
+                    Do you really want to delete the task? {{ task.text }}
                 </div>
                 <div class="modal-body">
                     <button class="btn btn-delete" @click="$emit('remove-task')">Yes</button>
-                    <button class="btn btn-close" @click="showModal=false">No</button>
+                    <button class="btn btn-close" @click="showModal = false">No</button>
                 </div>
             </div>
         </div>
