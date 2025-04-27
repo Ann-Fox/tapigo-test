@@ -9,14 +9,39 @@ const props = defineProps({
 })
 
 const showModal = ref(false)
+const showModalEdit = ref(false)
+const editTask = props.task.text.value
+
+const emit = defineEmits(['remove-task'])
+
+function removeTask() {
+    emit('remove-task')
+}
+
 </script>
 
 <template>
     <li class="task">
         <input type="checkbox" name="" v-model="task.done" :id="`box-${task.id}`" class="task__checkbox">
         <label :for="`box-${task.id}`" сlass="task__label" :class="{ 'done': task.done }"> {{ task.text }}</label>
-        <button class="task__button" @click="showModal = !showModal"><img src="./icons/delete_24.svg"></button>
+        <button class="task__button_edit" @click="showModalEdit = !showModalEdit"><img src="./icons/edit.svg"></button>
+        <button class="task__button_close" @click="showModal = !showModal"><img src="./icons/delete_24.svg"></button>
     </li>
+
+    <Transition name="modal">
+        <div v-if="showModalEdit" class="modal-mask">
+            <div class="modal-container">
+                <div class="modal-header">
+                    Сохранить изменения в задаче?
+                   <input type="text" :placeholder="task.text" v-model="editTask">
+                </div>
+                <div class="modal-body">
+                    <button class="btn btn-delete" @click="(task.text = editTask) && (showModalEdit = false)">Yes</button>
+                    <button class="btn btn-close" @click="showModalEdit = false">No</button>
+                </div>
+            </div>
+        </div>
+    </Transition>
 
     <Transition name="modal">
         <div v-if="showModal" class="modal-mask">
@@ -25,7 +50,7 @@ const showModal = ref(false)
                     Do you really want to delete the task? {{ task.text }}
                 </div>
                 <div class="modal-body">
-                    <button class="btn btn-delete" @click="$emit('remove-task')">Yes</button>
+                    <button class="btn btn-delete" @click="removeTask">Yes</button>
                     <button class="btn btn-close" @click="showModal = false">No</button>
                 </div>
             </div>
@@ -42,9 +67,9 @@ const showModal = ref(false)
     position: relative;
     padding: 10px 0;
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
     grid-template-areas:
-        "label input btn";
+        "label input edit close";
     align-items: end;
 }
 
@@ -58,7 +83,6 @@ const showModal = ref(false)
 
 .task__checkbox {
     grid-area: input;
-
     appearance: none;
     position: relative;
     margin: 0 auto;
@@ -98,15 +122,24 @@ li>label {
     white-space: nowrap;
     overflow: hidden;
 }
-
-.task__button {
-    grid-area: btn;
+.task__button_edit {
+    grid-area: edit;
     display: flex;
     justify-content: center;
     max-width: 30px;
     height: 100%;
     margin: 0 auto;
-    border-radius: 50%;
+    border-radius: 25%;
+    background-color: #f7eb43cc;
+}
+.task__button_close {
+    grid-area: close;
+    display: flex;
+    justify-content: center;
+    max-width: 30px;
+    height: 100%;
+    margin: 0 auto;
+    border-radius: 25%;
 
     background: -webkitnear-gradient(159deg, #ffffff, #fa0b23);
     /* Chrome 10-25, Safari 5.1-6 */
