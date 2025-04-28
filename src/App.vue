@@ -80,6 +80,7 @@ function removeTask(todo) {
         <div class="list__title">
           <p>List</p>
           <p>Status</p>
+          <p>Edit</p>
           <p>Close</p>
         </div>
         <ul>
@@ -184,7 +185,7 @@ h3 {
 
 .list__title {
   display: grid;
-  grid-template-columns: 3fr 1fr 1fr;
+  grid-template-columns: 3fr 1fr 1fr 1fr;
   margin-bottom: 20px;
   background-color: #f9f9f9;
   color: #d7d1cb;
@@ -218,7 +219,7 @@ ul {
   }
 
   .list__title {
-    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
   }
 
   .list__title>p:not(:first-child) {

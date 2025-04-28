@@ -9,14 +9,50 @@ const props = defineProps({
 })
 
 const showModal = ref(false)
+const showModalEdit = ref(false)
+const editTask = ref(props.task.text)
+
+const emit = defineEmits(['remove-task'])
+
+function removeTask() {
+    emit('remove-task')
+}
+
+// Сохранить изменения в названии задачи и закрыть модальное окно редактирования
+function editTaskText() {
+    props.task.text = editTask.value
+    showModalEdit.value = false
+}
+
+// Закрыть модальное окно без сохранения изменений
+function notEditTaskText() {
+    editTask.value = props.task.text
+    showModalEdit.value = false
+}
 </script>
 
 <template>
     <li class="task">
         <input type="checkbox" name="" v-model="task.done" :id="`box-${task.id}`" class="task__checkbox">
         <label :for="`box-${task.id}`" сlass="task__label" :class="{ 'done': task.done }"> {{ task.text }}</label>
-        <button class="task__button" @click="showModal = !showModal"><img src="./icons/delete_24.svg"></button>
+        <button class="task__button_edit" @click="showModalEdit = !showModalEdit"><img src="./icons/edit.svg"></button>
+        <button class="task__button_close" @click="showModal = !showModal"><img src="./icons/delete_24.svg"></button>
     </li>
+
+    <Transition name="modal">
+        <div v-if="showModalEdit" class="modal-mask">
+            <div class="modal-container">
+                <div class="modal-header">
+                    Сохранить изменения в задаче?
+                    <input type="text" v-model="editTask" class="modal-input">
+                </div>
+                <div class="modal-body">
+                    <button class="btn btn-delete" @click="editTaskText">Yes</button>
+                    <button class="btn btn-close" @click="notEditTaskText">No</button>
+                </div>
+            </div>
+        </div>
+    </Transition>
 
     <Transition name="modal">
         <div v-if="showModal" class="modal-mask">
@@ -25,7 +61,7 @@ const showModal = ref(false)
                     Do you really want to delete the task? {{ task.text }}
                 </div>
                 <div class="modal-body">
-                    <button class="btn btn-delete" @click="$emit('remove-task')">Yes</button>
+                    <button class="btn btn-delete" @click="removeTask">Yes</button>
                     <button class="btn btn-close" @click="showModal = false">No</button>
                 </div>
             </div>
@@ -42,9 +78,9 @@ const showModal = ref(false)
     position: relative;
     padding: 10px 0;
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
     grid-template-areas:
-        "label input btn";
+        "label input edit close";
     align-items: end;
 }
 
@@ -58,7 +94,6 @@ const showModal = ref(false)
 
 .task__checkbox {
     grid-area: input;
-
     appearance: none;
     position: relative;
     margin: 0 auto;
@@ -99,14 +134,25 @@ li>label {
     overflow: hidden;
 }
 
-.task__button {
-    grid-area: btn;
+.task__button_edit {
+    grid-area: edit;
     display: flex;
     justify-content: center;
     max-width: 30px;
     height: 100%;
     margin: 0 auto;
-    border-radius: 50%;
+    border-radius: 25%;
+    background-color: #f7eb43cc;
+}
+
+.task__button_close {
+    grid-area: close;
+    display: flex;
+    justify-content: center;
+    max-width: 30px;
+    height: 100%;
+    margin: 0 auto;
+    border-radius: 25%;
 
     background: -webkitnear-gradient(159deg, #ffffff, #fa0b23);
     /* Chrome 10-25, Safari 5.1-6 */
@@ -150,5 +196,18 @@ li>label {
 
 .btn-delete {
     background-color: #ff3d51;
+}
+
+.modal-input {
+    width: 100%;
+    max-width: 400px;
+    border: 0;
+    border-bottom: 2px solid #000;
+    outline: 0;
+}
+
+.modal-input:focus {
+    border-image: linear-gradient(to right, #11998e, #38ef7d);
+    border-image-slice: 1;
 }
 </style>
