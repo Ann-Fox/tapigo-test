@@ -16,6 +16,7 @@ const emit = defineEmits(['remove-task'])
 
 function removeTask() {
     emit('remove-task')
+    console.log("remove-task");
 }
 
 // Сохранить изменения в названии задачи и закрыть модальное окно редактирования
@@ -39,33 +40,33 @@ function notEditTaskText() {
         <button class="task__button_close" @click="showModal = !showModal"><img src="./icons/delete_24.svg"></button>
     </li>
 
-    <Transition name="modal">
-        <div v-if="showModalEdit" class="modal-mask">
+    <Transition name="modal" >
+        <form v-if="showModalEdit" class="modal-mask" @keydown.esc="notEditTaskText" @submit.prevent="editTaskText" id="task.id" name="task-edit">
             <div class="modal-container">
                 <div class="modal-header">
                     Сохранить изменения в задаче?
                     <input type="text" v-model="editTask" class="modal-input">
                 </div>
                 <div class="modal-body">
-                    <button class="btn btn-delete" @click="editTaskText">Yes</button>
+                    <button class="btn btn-delete" @click="editTaskText" >Yes</button>
                     <button class="btn btn-close" @click="notEditTaskText">No</button>
                 </div>
             </div>
-        </div>
+        </form>
     </Transition>
 
     <Transition name="modal">
-        <div v-if="showModal" class="modal-mask">
+        <form v-if="showModal" class="modal-mask" @submit.prevent @keydown.esc="showModal = false" id="task.id" name="task-remove">
             <div class="modal-container">
                 <div class="modal-header">
                     Do you really want to delete the task? {{ task.text }}
                 </div>
                 <div class="modal-body">
                     <button class="btn btn-delete" @click="removeTask">Yes</button>
-                    <button class="btn btn-close" @click="showModal = false">No</button>
+                    <button class="btn btn-close" @click="showModal = false" >No</button>
                 </div>
             </div>
-        </div>
+        </form>
     </Transition>
 </template>
 

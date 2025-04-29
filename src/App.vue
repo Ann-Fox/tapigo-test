@@ -66,7 +66,7 @@ function removeTask(todo) {
     </div>
 
     <form class="form" @submit.prevent="addTask">
-      <input class="form__input" type="text" required v-model="newTodo" placeholder="What would you like to do?">
+      <input class="form__input" type="text" required v-model="newTodo" placeholder="What would you like to do?" autofocus>
       <button class="form__button">Add task</button>
     </form>
 
