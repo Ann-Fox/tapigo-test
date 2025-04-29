@@ -7,16 +7,16 @@
 }
 
 #app {
-  width: 100%;
-  padding: 5%;
+  height: 100%;
 }
-
 body {
+  height: 100vh;
+
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 20px;
-  background-color: #f9f1ef;
+overflow-y: hidden;  
 }
 
 @media (max-width: 567px) {

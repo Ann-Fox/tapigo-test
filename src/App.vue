@@ -94,22 +94,16 @@ function removeTask(todo) {
 
 <style scoped>
 main {
+  height: 100%;
   background-color: #f7f7ff;
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  padding-bottom: 50px;
-  border-radius: 20px;
 }
 
 .header {
+  height: 150px;
   text-align: center;
   font-size: 36px;
   color: #fff;
   font-weight: 300;
-
-  height: 200px;
-  border-radius: 20px 20px 0 0;
   background: -webkit-linear-gradient(90deg, #604486, #59538d, #516395);
   /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(90deg, #604486, #59538d, #516395);
@@ -119,26 +113,21 @@ main {
 .form {
   background-color: #fff;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  padding: 30px 0;
+  padding: 30px;
   border-radius: 20px;
   gap: 20px;
 
   width: 90%;
   margin-inline: auto;
-  /* inset-inline: 0; */
   inset-block-start: 40%;
   transform: translateY(-70%);
-
-  -webkit-box-shadow: 0px 1px 42px -11px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0px 1px 42px -11px rgba(0, 0, 0, 0.2);
-  box-shadow: 0px 1px 42px -11px rgba(0, 0, 0, 0.2);
 }
 
 .form__input {
   width: 100%;
-  max-width: 400px;
+  max-width: 600px;
   border: 0;
   border-bottom: 2px solid #000;
   outline: 0;
@@ -159,17 +148,11 @@ main {
   display: flex;
   flex-direction: column;
   gap: 30px;
-
   width: 90%;
   margin: -60px auto 0 auto;
-
   padding: 30px 0;
   background-color: #ffffff;
   border-radius: 20px;
-
-  -webkit-box-shadow: 0px 1px 42px -11px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0px 1px 42px -11px rgba(0, 0, 0, 0.2);
-  box-shadow: 0px 1px 42px -11px rgba(0, 0, 0, 0.2);
 }
 
 .list__header {
@@ -185,7 +168,7 @@ h3 {
 
 .list__title {
   display: grid;
-  grid-template-columns: 3fr 1fr 1fr 1fr;
+  grid-template-columns: 2fr 0.5fr 0.5fr 0.5fr;
   margin-bottom: 20px;
   background-color: #f9f9f9;
   color: #d7d1cb;
@@ -193,14 +176,44 @@ h3 {
   font-weight: 300;
 }
 
+.list__title>p:not(:first-child) {
+  text-align: center;
+}
+
 ul {
   padding: 0 30px;
-  max-height: 500px;
+  max-height: calc(100vh - 400px);
   overflow-y: auto;
-
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
+}
+
+@media (max-width: 768px) {
+  .form {
+    padding: 20px;
+    transform: translateY(-125%);
+  }
+
+  .list {
+    gap: 20px;
+    padding: 20px 0;
+  }
+
+  .list__header {
+    padding: 0 20px;
+  }
+
+  .list__title {
+    margin-bottom: 10px;
+    padding: 0 20px;
+  }
+
+  ul {
+    padding: 0 20px;
+    max-height: calc(100vh - 325px);
+    gap: 10px;
+  }
 }
 
 @media (max-width: 567px) {
@@ -211,7 +224,10 @@ ul {
   }
 
   .form {
-    padding: 20px 0;
+    padding: 10px 0;
+    flex-direction: column;
+    transform: translateY(-90%);
+    gap: 10px;
   }
 
   .form__input {
@@ -237,22 +253,8 @@ ul {
     max-width: 200px;
   }
 
-  .list {
-    padding: 20px 0;
-    gap: 20px;
-  }
-
-  .list__header {
-    padding: 0 20px;
-  }
-
-  .list__title {
-    padding: 0 20px;
-  }
-
   ul {
-    gap: 10px;
-    padding: 0 20px;
+    max-height: calc(100vh - 310px);
   }
 }
 </style>

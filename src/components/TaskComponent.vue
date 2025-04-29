@@ -78,7 +78,7 @@ function notEditTaskText() {
     position: relative;
     padding: 10px 0;
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-template-columns: 2fr 0.5fr 0.5fr 0.5fr;
     grid-template-areas:
         "label input edit close";
     align-items: end;
