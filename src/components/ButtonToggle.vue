@@ -14,6 +14,7 @@ const props = defineProps({
     background-color: #ff3d51;
     max-width: 200px;
     font-size: 16px;
+    padding: 5px 20px;
 }
 
 .hide {

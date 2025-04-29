@@ -84,7 +84,7 @@ function notEditTaskText() {
     align-items: end;
 }
 
-.task::after {
+.task:not(:last-child)::after {
     content: "";
     position: absolute;
     width: 100%;
@@ -138,26 +138,33 @@ li>label {
     grid-area: edit;
     display: flex;
     justify-content: center;
-    max-width: 30px;
+    align-items: center;
+    width: 30px;
     height: 100%;
     margin: 0 auto;
     border-radius: 25%;
     background-color: #f7eb43cc;
 }
 
+.task__button_edit img{
+    width: 80%;
+    padding-left: 3px;
+}
+
 .task__button_close {
     grid-area: close;
     display: flex;
     justify-content: center;
+    align-items: center;
     max-width: 30px;
     height: 100%;
     margin: 0 auto;
     border-radius: 25%;
+    background: #fa0b23;
+}
 
-    background: -webkitnear-gradient(159deg, #ffffff, #fa0b23);
-    /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(159deg, #ffffff, #fa0b23);
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+.task__button_close img{
+    width: 80%;
 }
 
 .modal-mask {

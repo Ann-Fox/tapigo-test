@@ -142,6 +142,7 @@ main {
   background-color: #ed6a5a;
   max-width: 150px;
   text-transform: uppercase;
+  padding: 5px 20px;
 }
 
 .list {
