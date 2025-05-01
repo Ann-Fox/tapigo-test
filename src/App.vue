@@ -31,6 +31,7 @@ onMounted(() => {
   }
 })
 
+// запиываем в localStorage значение completed (скрыть/показать выполненные задачи)
 watch(completed, (newValue) => {
   localStorage.setItem('completed', JSON.stringify(newValue))
 })
@@ -44,15 +45,18 @@ watch(todos, (newValue) => {
 },
   { deep: true })
 
+  // фильтрация задач по статусу (скрыть/показать выполненные)
 const todosFilter = computed(() => {
   return completed.value ? todos.value.filter((t) => !t.done) : todos.value
 })
 
+// добавдление задачи
 function addTask() {
   todos.value.push({ id: id++, text: newTodo.value })
   newTodo.value = ''
 }
 
+// удаление задачи
 function removeTask(todo) {
   todos.value = todos.value.filter((t) => t !== todo)
 }
@@ -66,7 +70,8 @@ function removeTask(todo) {
     </div>
 
     <form class="form" @submit.prevent="addTask">
-      <input class="form__input" type="text" required v-model="newTodo" placeholder="What would you like to do?" autofocus>
+      <input class="form__input" type="text" required v-model="newTodo" placeholder="What would you like to do?"
+        autofocus>
       <button class="form__button">Add task</button>
     </form>
 
