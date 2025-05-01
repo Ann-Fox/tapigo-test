@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const props = defineProps({
     task: {
@@ -16,8 +16,28 @@ const emit = defineEmits(['remove-task'])
 
 function removeTask() {
     emit('remove-task')
-    console.log("remove-task");
+    console.log(`удалили задачу`);
 }
+
+// функция принимает событие и проверяет кнопку нажатия на клавиатуре
+function closeModalRemoveTask(event) {
+    if (event.code == 'Escape') {
+        console.log('clicl Escape');
+        showModal.value = false
+    }
+    if (event.code == 'Enter') {
+        console.log('Нажата клавиша Enter');
+        removeTask()
+    }
+    window.removeEventListener('keyup', closeModalRemoveTask);
+}
+
+// отслеживаем значение showModal, если true (модальное окно открыто), то добавляем событие по нажатию на клавишу
+watch(showModal, (newValue, oldValue) => {
+    if (newValue) {
+        window.addEventListener('keyup', closeModalRemoveTask);
+    }
+})
 
 // Сохранить изменения в названии задачи и закрыть модальное окно редактирования
 function editTaskText() {
@@ -25,10 +45,11 @@ function editTaskText() {
     showModalEdit.value = false
 }
 
-// Закрыть модальное окно без сохранения изменений
-function notEditTaskText() {
+// Закрыть модальное окно редактирования без сохранения изменений
+function notEditTaskText(e) {
     editTask.value = props.task.text
     showModalEdit.value = false
+    console.log(`закрыть модалку`, e.target);
 }
 </script>
 
@@ -40,30 +61,30 @@ function notEditTaskText() {
         <button class="task__button_close" @click="showModal = !showModal"><img src="./icons/delete_24.svg"></button>
     </li>
 
-    <Transition name="modal" >
-        <form v-if="showModalEdit" class="modal-mask" @keydown.esc="notEditTaskText" @submit.prevent="editTaskText" id="task.id" name="task-edit">
+    <Transition name="modal">
+        <form v-if="showModalEdit" class="modal-mask" id="task.id" name="task-edit" @submit.prevent>
             <div class="modal-container">
                 <div class="modal-header">
                     Сохранить изменения в задаче?
                     <input type="text" v-model="editTask" class="modal-input">
                 </div>
                 <div class="modal-body">
-                    <button class="btn btn-delete" @click="editTaskText" >Yes</button>
-                    <button class="btn btn-close" @click="notEditTaskText">No</button>
+                    <button id="btn-edit-task-text" class="btn btn-delete" @click="editTaskText">Yes</button>
+                    <button id="not-edit-task-text" class="btn btn-close" @click="notEditTaskText">No</button>
                 </div>
             </div>
         </form>
     </Transition>
 
     <Transition name="modal">
-        <form v-if="showModal" class="modal-mask" @submit.prevent @keydown.esc="showModal = false" id="task.id" name="task-remove">
+        <form v-if="showModal" @submit.prevent class="modal-mask" id="task.id" name="task-remove">
             <div class="modal-container">
                 <div class="modal-header">
                     Do you really want to delete the task? {{ task.text }}
                 </div>
                 <div class="modal-body">
                     <button class="btn btn-delete" @click="removeTask">Yes</button>
-                    <button class="btn btn-close" @click="showModal = false" >No</button>
+                    <button class="btn btn-close" @click="showModal = false">No</button>
                 </div>
             </div>
         </form>
@@ -147,7 +168,7 @@ li>label {
     background-color: #f7eb43cc;
 }
 
-.task__button_edit img{
+.task__button_edit img {
     width: 80%;
     padding-left: 3px;
 }
@@ -164,7 +185,7 @@ li>label {
     background: #fa0b23;
 }
 
-.task__button_close img{
+.task__button_close img {
     width: 80%;
 }
 
