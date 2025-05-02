@@ -20,7 +20,7 @@ function removeTask() {
     console.log(`удалили задачу`);
 }
 
-// функция принимает событие и проверяет кнопку нажатия на клавиатуре
+// функция принимает событие и проверяет кнопку нажатия на клавиатуре (закрытие модального окна удаления задачи)
 function closeModalRemoveTask(event) {
     if (event.code == 'Escape') {
         console.log('clicl Escape');
@@ -40,7 +40,26 @@ watch(showModal, (newValue, oldValue) => {
     }
 })
 
-// Сохранить изменения в названии задачи/ключевых словах (label) и закрыть модальное окно редактирования
+// функция принимает событие и проверяет кнопку нажатия на клавиатуре (закрытие модального окна редактирования задачи)
+function closeModalEditTask(event) {
+    if (event.code == 'Escape') {
+        // editTask.value = props.task.text
+        // editLabel.value = props.task.label
+        console.log(`click EscapeEdit: ${editTask.value}`);
+        showModalEdit.value = false
+        // notEditTaskText()
+    }
+    window.removeEventListener('keyup', closeModalEditTask);
+}
+
+// отслеживаем значение showModalEdit, если true (модальное окно открыто), то добавляем событие по нажатию на клавишу
+watch(showModalEdit, (newValue, oldValue) => {
+    if (newValue) {
+        window.addEventListener('keyup', closeModalEditTask);
+    }
+})
+
+// Закрыть модальное окно редактирования и сохранить изменения в названии задачи/ключевых словах (label)
 function editTaskText() {
     props.task.text = editTask.value
     showModalEdit.value = false
@@ -48,11 +67,10 @@ function editTaskText() {
 }
 
 // Закрыть модальное окно редактирования без сохранения изменений
-function notEditTaskText(e) {
+function notEditTaskText() {
     editTask.value = props.task.text
     editLabel.value = props.task.label
     showModalEdit.value = false
-    console.log(`закрыть модалку`, e.target);
 }
 </script>
 
@@ -63,7 +81,7 @@ function notEditTaskText(e) {
         <button class="task__button_edit" @click="showModalEdit = !showModalEdit"><img src="./icons/edit.svg"></button>
         <button class="task__button_close" @click="showModal = !showModal"><img src="./icons/delete_24.svg"></button>
         <div class="task__label">
-            <div v-for="(label,index) in task.label" :key="index" class="task__label-word">{{ label }}</div>
+            <div v-for="(label, index) in task.label" :key="index" class="task__label-word">{{ label }}</div>
         </div>
     </li>
 
