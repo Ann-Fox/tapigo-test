@@ -42,14 +42,11 @@ watch(showModal, (newValue, oldValue) => {
 
 // функция принимает событие и проверяет кнопку нажатия на клавиатуре (закрытие модального окна редактирования задачи)
 function closeModalEditTask(event) {
+    console.log(`click EscapeEdit: ${editTask.value}`);
     if (event.code == 'Escape') {
-        // editTask.value = props.task.text
-        // editLabel.value = props.task.label
-        console.log(`click EscapeEdit: ${editTask.value}`);
-        showModalEdit.value = false
-        // notEditTaskText()
+        notEditTaskText()
+        window.removeEventListener('keyup', closeModalEditTask);
     }
-    window.removeEventListener('keyup', closeModalEditTask);
 }
 
 // отслеживаем значение showModalEdit, если true (модальное окно открыто), то добавляем событие по нажатию на клавишу
