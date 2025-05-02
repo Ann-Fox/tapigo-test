@@ -11,6 +11,9 @@ const props = defineProps({
 const showModal = ref(false)
 const showModalEdit = ref(false)
 const editTask = ref(props.task.text)
+const labels = ref('')
+const labelsArray = ref([])
+
 
 const emit = defineEmits(['remove-task'])
 
@@ -43,6 +46,10 @@ watch(showModal, (newValue, oldValue) => {
 function editTaskText() {
     props.task.text = editTask.value
     showModalEdit.value = false
+    console.log(labels.value);
+    console.log(labels);
+    labelsArray.value = labels.value.trim().split(',')
+    console.log(labelsArray);
 }
 
 // Закрыть модальное окно редактирования без сохранения изменений
@@ -59,14 +66,18 @@ function notEditTaskText(e) {
         <label :for="`box-${task.id}`" сlass="task__label" :class="{ 'done': task.done }"> {{ task.text }}</label>
         <button class="task__button_edit" @click="showModalEdit = !showModalEdit"><img src="./icons/edit.svg"></button>
         <button class="task__button_close" @click="showModal = !showModal"><img src="./icons/delete_24.svg"></button>
+        <div class="task__label">
+            <div v-for="(label, index) in labelsArray" :key="index" class="task__label-word">{{ label }}</div>
+        </div>
     </li>
 
     <Transition name="modal">
         <form v-if="showModalEdit" class="modal-mask" id="task.id" name="task-edit" @submit.prevent>
             <div class="modal-container">
                 <div class="modal-header">
-                    Сохранить изменения в задаче?
+                    <h3>Сохранить изменения в задаче?</h3>
                     <input type="text" v-model="editTask" class="modal-input">
+                    <input type="text" class="modal-input" :placeholder="'Ключевые слова'" v-model="labels">
                 </div>
                 <div class="modal-body">
                     <button id="btn-edit-task-text" class="btn btn-delete" @click="editTaskText">Yes</button>
@@ -101,6 +112,7 @@ function notEditTaskText(e) {
     padding: 10px 0;
     display: grid;
     grid-template-columns: 2fr 0.5fr 0.5fr 0.5fr;
+    grid-template-columns: repeat(auto-fill, 1fr);
     grid-template-areas:
         "label input edit close";
     align-items: end;
@@ -189,6 +201,20 @@ li>label {
     width: 80%;
 }
 
+.task__label {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.task__label-word {
+    padding: 10px 25px;
+    background-color: #00bd7d;
+    color: #fff;
+    border-radius: 30px;
+    text-align: center;
+}
+
 .modal-mask {
     position: fixed;
     top: 0;
@@ -212,6 +238,9 @@ li>label {
 
 .modal-header {
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .modal-body {
