@@ -12,6 +12,7 @@ const showModal = ref(false)
 const showModalEdit = ref(false)
 const editTask = ref(props.task.text)
 const editLabel = ref(props.task.label)
+const arrLabel = ref(props.task.label)
 
 const emit = defineEmits(['remove-task'])
 
@@ -39,10 +40,19 @@ watch(showModal, (newValue, oldValue) => {
         window.addEventListener('keyup', closeModalRemoveTask);
     }
 })
-
 // функция принимает событие и проверяет кнопку нажатия на клавиатуре (закрытие модального окна редактирования задачи)
 function closeModalEditTask(event) {
-    console.log(`click EscapeEdit: ${editTask.value}`);
+    // console.log(`click EscapeEdit: ${editTask.value}`);
+
+    if (event.code == 'Comma') {
+        // ref([]) 'dom' - то 1 элемент, 'family' - 2 элемент в массиве
+        console.log("нажата запятая");
+        console.log(editLabel.value);
+        console.log(props.task.label);
+        console.log(arrLabel.value);
+        arrLabel.value = editLabel.value.split(',')
+    }
+
     if (event.code == 'Escape') {
         notEditTaskText()
         window.removeEventListener('keyup', closeModalEditTask);
@@ -60,13 +70,14 @@ watch(showModalEdit, (newValue, oldValue) => {
 function editTaskText() {
     props.task.text = editTask.value
     showModalEdit.value = false
-    props.task.label = editLabel.value.trim().split(',')
+    props.task.label = editLabel.value.split(',')
 }
 
 // Закрыть модальное окно редактирования без сохранения изменений
 function notEditTaskText() {
     editTask.value = props.task.text
     editLabel.value = props.task.label
+    arrLabel.value = props.task.label
     showModalEdit.value = false
 }
 </script>
@@ -87,8 +98,12 @@ function notEditTaskText() {
             <div class="modal-container">
                 <div class="modal-header">
                     <h3>Сохранить изменения в задаче?</h3>
-                    <input type="text" v-model="editTask" class="modal-input">
-                    <input type="text" class="modal-input" :placeholder="'Ключевые слова'" v-model="editLabel">
+                    <input type="text" v-model.trim="editTask" class="modal-input">
+                    <input type="text" class="modal-input" :placeholder="'Ключевые слова'" v-model.trim="editLabel">
+                    <div class="task__label">
+                        <div v-for="(item, index) in arrLabel" :key="index" class="task__label-word">{{ item }}
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-body">
                     <button id="btn-edit-task-text" class="btn btn-delete" @click="editTaskText">Yes</button>

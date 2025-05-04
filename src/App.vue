@@ -38,14 +38,10 @@ watch(completed, (newValue) => {
 
 watch(todos, (newValue) => {
   localStorage.setItem('todos', JSON.stringify(newValue))
-
-  const todosFilter = computed(() => {
-    return completed.value ? todos.value.filter((t) => !t.done) : todos.value
-  })
 },
   { deep: true })
 
-  // фильтрация задач по статусу (скрыть/показать выполненные)
+// // фильтрация задач по статусу (скрыть/показать выполненные)
 const todosFilter = computed(() => {
   return completed.value ? todos.value.filter((t) => !t.done) : todos.value
 })
