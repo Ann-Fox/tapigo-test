@@ -62,24 +62,13 @@ function closeModalEditTask(event) {
         console.log(arrEmpty);
 
         props.task.label = arrEmpty //записываем получившийся массив
-
-
-        // props.task.label = arrEmpty.value
-        // for (let index = 0; index < array.length; index++) {
-        //     const element = array[index].trim(); сначала затримила,
-
-        //     if(str !== '') { проверила пустой/не пустой, если все ок добавила в массив новый
-
-        //     }
-        //     проверка на пустую строку, + трим, если что-то есть то тут пушу в массив и пихаю в реф (вью поймет  - обновляемся), map уже не нужен
-        // }
-
-
     }
-    // создать пустой новый массив - сплит - форич прокручиваем (добывила в этот пустой массив, если значение не пустое, то что пустое "" - не добавляем) в этот пустой новый массив, этот не пустой массив пихаем в реф над мапом
 
     if (event.code == 'Escape') {
-        notEditTaskText()
+        // notEditTaskText()
+        editTask.value = props.task.text
+        editLabel.value = props.task.label
+        showModalEdit.value = false
         window.removeEventListener('keyup', closeModalEditTask);
     }
 }
@@ -95,22 +84,7 @@ watch(showModalEdit, (newValue, oldValue) => {
 function editTaskText() {
     props.task.text = editTask.value
     showModalEdit.value = false
-    // props.task.label = editLabel.value.split(',')
-    const array = editLabel.value.split(',')  //создать пустой новый массив - сплит
-        const arrEmpty = [] //массив для записи в ref
-
-        for (let index = 0; index < array.length; index++) {
-            const element = array[index].trim(); // убираем пробелы справа/слева в каждом элементе массива
-            console.log(element);
-            if (element != '') { // если элемент (после удаления пробелов) не пустой
-                arrEmpty.push(element) //то добавляем его в массив
-            }
-        }
-
-        console.log(arrEmpty);
-
-        props.task.label = arrEmpty
-        // editLabel.value = arrEmpty
+    props.task.label = editLabel.value.split(',')
 }
 
 // Закрыть модальное окно редактирования без сохранения изменений
