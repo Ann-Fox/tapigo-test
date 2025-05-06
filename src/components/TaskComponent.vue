@@ -11,7 +11,6 @@ const props = defineProps({
 const showModal = ref(false)
 const showModalEdit = ref(false)
 const editTask = ref(props.task.text)
-const editLabel = ref(props.task.label)
 
 const emit = defineEmits(['remove-task'])
 
@@ -39,58 +38,30 @@ watch(showModal, (newValue, oldValue) => {
         window.addEventListener('keyup', closeModalRemoveTask);
     }
 })
-// функция принимает событие и проверяет кнопку нажатия на клавиатуре (закрытие модального окна редактирования задачи)
+
 function closeModalEditTask(event) {
-    // console.log(`click EscapeEdit: ${editTask.value}`);
-
-    if (event.code == 'Comma' || event.code == 'Slash shiftKey') {
-        // ref([]) 'dom' - то 1 элемент, 'family' - 2 элемент в массиве
-        console.log("нажата запятая");
-
-        // arrLabel.value = (editLabel.value).split(',').splice(-1, 1).map(item => item.trim())
-        const array = editLabel.value.split(',')  //создать пустой новый массив - сплит
-        const arrEmpty = [] //массив для записи в ref
-
-        for (let index = 0; index < array.length; index++) {
-            const element = array[index].trim(); // убираем пробелы справа/слева в каждом элементе массива
-            console.log(element);
-            if (element != '') { // если элемент (после удаления пробелов) не пустой
-                arrEmpty.push(element) //то добавляем его в массив
-            }
-        }
-
-        console.log(arrEmpty);
-
-        props.task.label = arrEmpty //записываем получившийся массив
-    }
-
-    if (event.code == 'Escape') {
-        // notEditTaskText()
+    console.log(`нажата клавиша ${event.code}`);
+    if(event.code == 'Escape') {
+        console.log('click Esc');
         editTask.value = props.task.text
-        editLabel.value = props.task.label
         showModalEdit.value = false
         window.removeEventListener('keyup', closeModalEditTask);
     }
 }
-
-// отслеживаем значение showModalEdit, если true (модальное окно открыто), то добавляем событие по нажатию на клавишу
 watch(showModalEdit, (newValue, oldValue) => {
     if (newValue) {
-        window.addEventListener('keyup', closeModalEditTask);
+        window.addEventListener('keyup', closeModalEditTask)
     }
 })
-
 // Закрыть модальное окно редактирования и сохранить изменения в названии задачи/ключевых словах (label)
 function editTaskText() {
     props.task.text = editTask.value
     showModalEdit.value = false
-    props.task.label = editLabel.value.split(',')
 }
 
 // Закрыть модальное окно редактирования без сохранения изменений
 function notEditTaskText() {
     editTask.value = props.task.text
-    editLabel.value = props.task.label
     showModalEdit.value = false
 }
 </script>
@@ -101,9 +72,9 @@ function notEditTaskText() {
         <label :for="`box-${task.id}`" сlass="task__label" :class="{ 'done': task.done }"> {{ task.text }}</label>
         <button class="task__button_edit" @click="showModalEdit = !showModalEdit"><img src="./icons/edit.svg"></button>
         <button class="task__button_close" @click="showModal = !showModal"><img src="./icons/delete_24.svg"></button>
-        <div class="task__label">
+        <!-- <div class="task__label">
             <div v-for="(label, index) in task.label" :key="index" class="task__label-word">{{ label }}</div>
-        </div>
+        </div> -->
     </li>
 
     <Transition name="modal">
@@ -112,11 +83,11 @@ function notEditTaskText() {
                 <div class="modal-header">
                     <h3>Сохранить изменения в задаче?</h3>
                     <input type="text" v-model.trim="editTask" class="modal-input">
-                    <input type="text" class="modal-input" :placeholder="'Ключевые слова'" v-model.trim="editLabel">
-                    <div class="task__label">
+                    <!-- <input type="text" class="modal-input" :placeholder="'Ключевые слова'" v-model.trim="editLabel"> -->
+                    <!-- <div class="task__label">
                         <div v-for="(item, index) in task.label" :key="index" class="task__label-word">{{ item }}
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="modal-body">
                     <button id="btn-edit-task-text" class="btn btn-delete" @click="editTaskText">Yes</button>
